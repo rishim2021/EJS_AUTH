@@ -1,4 +1,4 @@
-const loginService = require("../routes/login/login");
+const loginService = require("../src/login/routes/login");
 
 const express = require('express');
 
@@ -8,13 +8,13 @@ const path = require('path');
 
 const cookierParser = require('cookie-parser')
 
-const registerService = require('../routes/register/register');
+const registerService = require('../src/register/routes/register');
 
 module.exports = (app) =>{
     app.use(cookierParser('1234'));
     app.use(cookieAuth)
     app.use(express.json())
-    app.use(express.static('public'))
+    app.use(express.static('assets'))
     app.set('view engine', 'ejs');
     app.set('layout', 'layouts/layout');
     app.use('/login',loginService)
