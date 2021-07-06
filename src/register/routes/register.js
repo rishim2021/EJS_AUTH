@@ -10,7 +10,7 @@ const router  = express.Router();
 
 const _ = require('lodash');
 
-const { validate,validateEml } = require('../middleware/validation');
+const { validate } = require('../middleware/validation');
 
 router.get('/',async(req,res)=>{
     res.status(200).render('login',{register:1,login:0})

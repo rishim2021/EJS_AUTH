@@ -21,10 +21,7 @@ function validateFields(bodyData){
     return schema.validate(bodyData,{allowUnknown:true})
 }
 
-function validateEmail(bodyData){
-  
-}
+
 
 
 exports.validate = validateFields;
-exports.validateEml = validateEmail;
