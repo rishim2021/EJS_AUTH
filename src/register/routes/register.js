@@ -10,6 +10,9 @@ const router  = express.Router();
 
 const _ = require('lodash');
 
+const bcrypt = require('bcryptjs');
+
+
 const { validate } = require('../middleware/validation');
 
 router.get('/',async(req,res)=>{
@@ -18,6 +21,7 @@ router.get('/',async(req,res)=>{
 
 router.post('/',async(req,res)=>{
      let bodyData = req.body;
+     console.log(bodyData)
      const { error }  = validate(bodyData)
      if(error) return res.status(400).send({Error:error.details[0].message})
      let User = await userModel.findOne({ where : {
@@ -29,6 +33,9 @@ router.post('/',async(req,res)=>{
      if(User) return res.status(302).send({msg:'Already Exists!!'})
 
      let userData = _.pick(bodyData,['UserName','UserEmail','UserPhone','UserPassword'])
+
+     userData.UserPassword = await bcrypt.hash(userData.UserPassword,12)
+
 
      let userFinalModel = await new userModel(userData);
      userFinalModel.save()
