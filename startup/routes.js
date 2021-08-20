@@ -14,20 +14,26 @@ const registerService = require('../src/register/routes/register');
 
 const session = require('express-session')
 
+const passport = require('passport');
+
 module.exports = (app) =>{
-    app.use(cookierParser('1234'));
-    // app.use(cookieAuth)
-    app.use(express.json())
-    app.use(express.static('assets'))
+    require('../src/login/middleware/passport')(passport);
     db.sequelize.sync()
-    app.set('view engine', 'ejs');
+    app.use(express.json())
+    app.use(express.urlencoded({extended:false}))
+    app.use(express.static('assets'))
+    app.use(cookierParser('1234'))
     app.use(session({
         secret:"Secret@123",
-        resave:false,
-        saveUninitialized:false,
+        cookie: { 
+            secure: false
+        },
+        saveUninitialized: true,
+        resave: true,
     }))
-    app.use(express.urlencoded({extended:false}))
-    app.set('layout', 'layouts/layout');
+    app.use(passport.initialize());
+    app.use(passport.session());
+    app.set('view engine', 'ejs');
     app.use('/login',loginService)
     app.use('/register',registerService)
     app.get('/',async(req,res)=>{

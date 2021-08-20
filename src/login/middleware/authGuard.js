@@ -1,9 +1,13 @@
-const authGuard = (req,res,next)=>{
-    if(req.session.isAuth){
-        next();
+
+const auth = (req,res,next)=>{
+    console.log("running")
+    console.log(req.isAuthenticated())
+    if(req.isAuthenticated()){
+        return next();
     }else{
-        res.redirect('/login')
+        res.redirect('/login')    
     }
 }
 
-module.exports = authGuard;
+
+module.exports = auth;

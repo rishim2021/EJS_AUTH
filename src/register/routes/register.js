@@ -10,7 +10,7 @@ const router  = express.Router();
 
 const _ = require('lodash');
 
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 
 
 const { validate } = require('../middleware/validation');
@@ -34,7 +34,8 @@ router.post('/',async(req,res)=>{
 
      let userData = _.pick(bodyData,['UserName','UserEmail','UserPhone','UserPassword'])
 
-     userData.UserPassword = await bcrypt.hash(userData.UserPassword,12)
+     let salt = await bcrypt.genSalt(10);
+     userData.UserPassword = await bcrypt.hash(userData.UserPassword,salt)
 
 
      let userFinalModel = await new userModel(userData);
